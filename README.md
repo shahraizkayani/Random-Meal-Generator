@@ -1,5 +1,6 @@
-Random Meal Generator from Idea by Florin Pop 
 # Random Meal Generator
+
+Random Meal Generator from Idea by Florin Pop 
 
 **Tier:** 1-Beginner
 
@@ -14,3 +15,9 @@ Generate a random meal from an API.
 ## Bonus features
 
 - [ ] The app should display a **YouTube Video**
+
+
+
+## Uploaded on CodePen
+
+- [Random Meal Generator Jquery by Shahraiz Kayani on Codepen](https://codepen.io/shahraiz/full/gOrMNej)
