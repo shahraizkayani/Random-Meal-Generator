@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Random Meal Generator</title>
+    <style>
+      h1, h3{
+            font-family: Oswald,Arial;
+            margin-left: 30%;
+        }
+        button{
+            width:10%;
+        }
+       
+
+        ul {
+            list-style-type: none;
+            font-family: Oswald,Arial;
+            font-size: 1em;
+            margin:0;
+            padding:0;
+        }
+        li {
+            font-family: Oswald,Arial;
+            text-align: left;
+            border-bottom: 1px;
+        }
+        #instructions {
+            font-family: Oswald,Arial;
+            text-align: justify;
+            font-size: 1.25em;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            GetMeal();
+
+            $('#new-Meal').click(function () {
+                GetMeal();
+
+            });
+         
+            function GetMeal() {
+
+                $.ajax({
+                    url: "https://www.themealdb.com/api/json/v1/1/random.php",
+                    method: "get",
+                    dataType: "json",
+                    success: function (data) {
+                        var randomcolor = '#' + (Math.random() * 0xFFFFFF << 0).toString(16);
+                        $('body').css('background-color', randomcolor);
+                        $('button').css('color', "white");
+                       var meal = data.meals[0];
+                      
+                        $("#Meal").text("Recipe : "+ meal.strMeal);
+                        $("#img").attr('src', meal.strMealThumb);
+                       
+                        
+                        var str = meal.strYoutube;
+                        var youtube = "https://www.youtube.com/embed/" + str.substring(str.indexOf("=") + 1, str.length);
+                       
+                        $("#video").attr('src', youtube);
+                        $("#instructions").html("<h3>Instructions </h3>" +meal.strInstructions);
+                        var ingredients = "<ul>";
+                        for (var i = 1; i <= 20; i++) {
+                            
+                            var thing = "strIngredient" + i;
+                            var thing1 = "strMeasure" + i;
+                          
+                          
+                                ingredients += "<li>" + meal[thing];
+                                ingredients += " (" + meal[thing1] + ")" + "</li>";
+                            
+                        }
+                        ingredients += "</ul>";
+                        $("#ingredients ul").empty();
+                        $("#ingredients").append(ingredients);
+                        $('li:contains("null (null)")').remove();
+                        $('li:contains(" ( ) ")').remove();
+                        $('li:contains(" null(null)")').remove();
+                        $('li:contains("()")').remove();
+                        $('li:contains("( )")').remove();
+
+
+                        $("#img").attr('width', $(".container-fluid").width() / 2);
+
+                        $("#img").attr('height', $("#ingredients").height() + $("#instructions").height() );
+                        
+                    },
+                    error: function (err) {
+                        alert(err);
+                    }
+
+
+
+
+                });
+
+
+            }
+            function randomRange(myMin, myMax) {
+                return Math.floor(Math.random() * (myMax - myMin + 1)) + myMin;
+            }
+
+
+        });
+
+    </script>
+</head>
+<body>
+    <h1>Click  <button  id="new-Meal" title="Click to Get New Meal" class="btn btn-info text-center" role="button">
+    Me
+</button> to Generate New Meal </h1>
+    
+    <br />
+    <div class="text-center">
+
+        <h2 id="Meal" class="text-center">
+        </h2>
+        <br />
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-6">
+                    <img id="img" src="" width="300" />
+                </div>
+                <div class="col-6">
+                    
+                    <div id="ingredients">
+                        <h3 style="text-align:left;">Ingredients </h3>
+                    </div>
+                    <div id="instructions">
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <iframe style="width:70%;height:500px;margin:10px;" id="video"
+                    src="" frameborder="0"
+                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>
+
+
+        </div>
+        <br />
+        <br />
+    </div>
+
+
+
+    <h6 class="text-center">Written and Coded By <a href="https://codepen.io/Shahraiz19"> Shahraiz Kayani</a></h6>
+</body>
+</html>
